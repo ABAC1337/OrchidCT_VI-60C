@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tenant Mutation History - OrchidCT</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#6a59e8",
+                        "background-light": "#f8f9fe","background-dark": "#131121",
+                        "sidebar-dark": "#1A1A2E","surface-light": "#ffffff",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "sans": ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.5rem", 
+                        "lg": "0.75rem", 
+                        "xl": "1.5rem", 
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            height: 6px;
+            width: 6px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 10px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+    </style>
+</head>
+<body class="bg-[#F8F9FE] dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased">
+<div class="flex min-h-screen w-full flex-row overflow-hidden">
+<aside class="flex w-64 flex-col bg-[#1A1A2E] text-white flex-shrink-0 transition-all duration-300">
+<div class="flex h-20 items-center gap-3 px-6 border-b border-white/10">
+<div class="flex h-10 w-10 items-center justify-center rounded-xl bg-primary/20 text-primary-300">
+<span class="material-symbols-outlined text-2xl text-[#818CF8]">apartment</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-base font-bold leading-tight text-white">OrchidCT</h1>
+<p class="text-xs font-medium text-slate-400">Tenant Portal</p>
+</div>
+</div>
+<nav class="flex flex-1 flex-col gap-6 overflow-y-auto px-4 py-6">
+<div>
+<p class="px-4 text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">MENU UTAMA</p>
+<div class="flex flex-col gap-1">
+<a class="group flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-slate-400 hover:bg-white/5 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+                            Overview
+                        </a>
+<a class="group flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-slate-400 hover:bg-white/5 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">bedroom_parent</span>
+                            Kamar Aktif
+                        </a>
+<a class="group flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-slate-400 hover:bg-white/5 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">update</span>
+                            Perpanjang Sewa
+                        </a>
+<a class="group flex items-center gap-3 rounded-lg bg-primary px-4 py-3 text-sm font-medium text-white shadow-md transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px] fill-1">receipt_long</span>
+                            Mutasi
+                        </a>
+</div>
+</div>
+<div>
+<p class="px-4 text-xs font-semibold uppercase tracking-wider text-slate-500 mb-2">AKUN</p>
+<div class="flex flex-col gap-1">
+<a class="group flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-slate-400 hover:bg-white/5 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">person</span>
+                            Profil
+                        </a>
+<a class="group flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-slate-400 hover:bg-white/5 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+                            Pengaturan
+                        </a>
+</div>
+</div>
+</nav>
+<div class="mt-auto border-t border-white/10 p-4">
+<a class="flex items-center gap-3 rounded-lg px-4 py-3 text-sm font-medium text-slate-400 hover:bg-red-500/10 hover:text-red-400 transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+                    Logout
+                </a>
+</div>
+</aside>
+<div class="flex flex-1 flex-col overflow-hidden">
+<header class="flex h-20 items-center justify-between border-b border-slate-200 bg-white px-8 dark:border-slate-800 dark:bg-[#1a1825]">
+<div class="flex flex-col justify-center">
+<h2 class="text-xl font-bold text-slate-900 dark:text-white">Riwayat Mutasi</h2>
+<p class="text-sm text-slate-500 dark:text-slate-400">Lihat semua riwayat transaksi pembayaran anda di sini.</p>
+</div>
+<div class="flex items-center gap-6">
+<div class="flex items-center gap-6 mr-auto">
+<span class="inline-flex items-center rounded-full bg-emerald-50 px-3 py-1 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-600/20 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-500/20">
+                            Status: Aktif
+                        </span>
+</div>
+<div class="flex items-center gap-6">
+<button class="relative rounded-full p-2 text-slate-400 hover:bg-slate-100 hover:text-slate-600 dark:hover:bg-slate-800 dark:hover:text-slate-300">
+<span class="absolute right-2 top-2 h-2 w-2 rounded-full bg-red-500 ring-2 ring-white dark:ring-[#1a1825]"></span>
+<span class="material-symbols-outlined text-[24px]">notifications</span>
+</button>
+<div class="h-8 w-px bg-slate-200 dark:bg-slate-700"></div>
+<div class="flex items-center gap-3">
+<div class="flex flex-col items-end">
+<span class="text-sm font-bold text-slate-900 dark:text-white">Budi Santoso</span>
+<span class="text-xs font-medium text-slate-500 dark:text-slate-400">Kamar 102</span>
+</div>
+<div class="h-10 w-10 overflow-hidden rounded-full border border-slate-200 bg-slate-100 dark:border-slate-700">
+<img alt="Profile" class="h-full w-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuB8eQfpni2hJsDCKJWSJTgiOf_l5oCGdeyfVe1hmvhOdvr--zNvRURcSMTfwKMjfrBLEg6VfHX1osQ-y303w8jVr3qlW9DEy-Fvk7MF7HsHVxA4tWGVDqNKMQTGRWvK0I_h4vJvUNvzOjgLR6lUlhiraqIkXA3v2uAqogA_uiSkeHOLd3yfpgD5ofgKp6xyuAX93ZqEpiDIN45xK6fvYYmATRUi9FjuA3sl3k4rgSYVVM6QI2nLeQGq1TYEZt0-hHw3UMf83phABwM"/>
+</div>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-1 overflow-y-auto bg-[#F8F9FE] p-4 dark:bg-background-dark md:p-8 lg:p-10">
+<div class="mx-auto max-w-6xl">
+<div class="mb-8 flex flex-col justify-end gap-4 md:flex-row md:items-center">
+<div class="flex items-center gap-3">
+<button class="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-slate-200 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700">
+<span class="material-symbols-outlined text-[20px]">download</span>
+                                Export PDF
+                            </button>
+<button class="inline-flex items-center gap-2 rounded-lg bg-primary px-4 py-2.5 text-sm font-medium text-white shadow-sm hover:bg-primary/90 focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 dark:focus:ring-offset-slate-900">
+<span class="material-symbols-outlined text-[20px]">add</span>
+                                Bayar Tagihan
+                            </button>
+</div>
+</div>
+<div class="mb-6 grid gap-4 lg:grid-cols-4">
+<div class="rounded-2xl bg-gradient-to-br from-primary to-purple-600 p-6 text-white shadow-lg lg:col-span-1">
+<p class="mb-1 text-sm font-medium text-white/80">Total Pengeluaran Bulan Ini</p>
+<h3 class="text-2xl font-bold">Rp 3.450.000</h3>
+<div class="mt-4 flex items-center gap-2 text-xs font-medium text-white/70">
+<span class="material-symbols-outlined text-sm">trending_up</span>
+                                +12% dari bulan lalu
+                            </div>
+</div>
+<div class="flex flex-col justify-center rounded-2xl bg-white p-4 shadow-sm ring-1 ring-slate-200/50 dark:bg-slate-800 dark:ring-slate-700 lg:col-span-3">
+<div class="flex flex-col gap-4 md:flex-row md:items-center">
+<div class="relative flex-1">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">search</span>
+<input class="w-full rounded-xl border border-slate-200 bg-slate-50 py-2.5 pl-10 pr-4 text-sm text-slate-700 placeholder-slate-400 focus:border-primary focus:bg-white focus:outline-none focus:ring-1 focus:ring-primary dark:border-slate-700 dark:bg-slate-900 dark:text-white" placeholder="Cari transaksi..." type="text"/>
+</div>
+<div class="relative min-w-[200px]">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">calendar_today</span>
+<select class="w-full appearance-none rounded-xl border border-slate-200 bg-white py-2.5 pl-10 pr-8 text-sm text-slate-700 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:border-slate-700 dark:bg-slate-800 dark:text-white">
+<option>Oktober 2023</option>
+<option>September 2023</option>
+<option>Agustus 2023</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-sm">expand_more</span>
+</div>
+<div class="relative min-w-[160px]">
+<span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">filter_list</span>
+<select class="w-full appearance-none rounded-xl border border-slate-200 bg-white py-2.5 pl-10 pr-8 text-sm text-slate-700 focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary dark:border-slate-700 dark:bg-slate-800 dark:text-white">
+<option value="all">Semua Status</option>
+<option value="lunas">Lunas</option>
+<option value="pending">Pending</option>
+</select>
+<span class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-slate-400 text-sm">expand_more</span>
+</div>
+</div>
+</div>
+</div>
+<div class="rounded-2xl bg-white shadow-sm ring-1 ring-slate-200 dark:bg-slate-800 dark:ring-slate-700 overflow-hidden">
+<div class="overflow-x-auto custom-scrollbar">
+<table class="w-full min-w-[800px] border-collapse text-left">
+<thead>
+<tr class="border-b border-slate-100 bg-slate-50/50 dark:border-slate-700 dark:bg-slate-800/50">
+<th class="whitespace-nowrap px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Tanggal</th>
+<th class="whitespace-nowrap px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">ID Transaksi</th>
+<th class="w-full px-6 py-4 text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Deskripsi</th>
+<th class="whitespace-nowrap px-6 py-4 text-right text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Jumlah</th>
+<th class="whitespace-nowrap px-6 py-4 text-center text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Status</th>
+<th class="px-6 py-4"></th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100 dark:divide-slate-700">
+<tr class="group transition-colors hover:bg-slate-50 dark:hover:bg-slate-700/50">
+<td class="whitespace-nowrap px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-medium text-slate-900 dark:text-white">24 Okt 2023</span>
+<span class="text-xs text-slate-500">14:30 WIB</span>
+</div>
+</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-slate-500 font-mono">#TRX-8829</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400">
+<span class="material-symbols-outlined text-[20px]">home</span>
+</div>
+<div>
+<p class="text-sm font-medium text-slate-900 dark:text-white">Pembayaran Sewa</p>
+<p class="text-xs text-slate-500">Periode November 2023</p>
+</div>
+</div>
+</td>
+<td class="whitespace-nowrap px-6 py-4 text-right text-sm font-bold text-slate-900 dark:text-white">Rp 2.500.000</td>
+<td class="whitespace-nowrap px-6 py-4 text-center">
+<span class="inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-600/20 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-500/20">
+                                                Lunas
+                                            </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary dark:text-slate-500 dark:hover:text-primary-400">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="group transition-colors hover:bg-slate-50 dark:hover:bg-slate-700/50">
+<td class="whitespace-nowrap px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-medium text-slate-900 dark:text-white">20 Okt 2023</span>
+<span class="text-xs text-slate-500">09:15 WIB</span>
+</div>
+</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-slate-500 font-mono">#TRX-8812</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-amber-50 text-amber-600 dark:bg-amber-900/20 dark:text-amber-400">
+<span class="material-symbols-outlined text-[20px]">bolt</span>
+</div>
+<div>
+<p class="text-sm font-medium text-slate-900 dark:text-white">Tagihan Utilitas</p>
+<p class="text-xs text-slate-500">Listrik &amp; Air (Oktober Usage)</p>
+</div>
+</div>
+</td>
+<td class="whitespace-nowrap px-6 py-4 text-right text-sm font-bold text-slate-900 dark:text-white">Rp 450.000</td>
+<td class="whitespace-nowrap px-6 py-4 text-center">
+<span class="inline-flex items-center rounded-full bg-yellow-50 px-2.5 py-0.5 text-xs font-medium text-yellow-700 ring-1 ring-inset ring-yellow-600/20 dark:bg-yellow-500/10 dark:text-yellow-400 dark:ring-yellow-500/20">
+                                                Pending
+                                            </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary dark:text-slate-500 dark:hover:text-primary-400">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="group transition-colors hover:bg-slate-50 dark:hover:bg-slate-700/50">
+<td class="whitespace-nowrap px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-medium text-slate-900 dark:text-white">24 Sep 2023</span>
+<span class="text-xs text-slate-500">10:00 WIB</span>
+</div>
+</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-slate-500 font-mono">#TRX-7920</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400">
+<span class="material-symbols-outlined text-[20px]">home</span>
+</div>
+<div>
+<p class="text-sm font-medium text-slate-900 dark:text-white">Pembayaran Sewa</p>
+<p class="text-xs text-slate-500">Periode Oktober 2023</p>
+</div>
+</div>
+</td>
+<td class="whitespace-nowrap px-6 py-4 text-right text-sm font-bold text-slate-900 dark:text-white">Rp 2.500.000</td>
+<td class="whitespace-nowrap px-6 py-4 text-center">
+<span class="inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-600/20 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-500/20">
+                                                Lunas
+                                            </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary dark:text-slate-500 dark:hover:text-primary-400">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="group transition-colors hover:bg-slate-50 dark:hover:bg-slate-700/50">
+<td class="whitespace-nowrap px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-medium text-slate-900 dark:text-white">20 Sep 2023</span>
+<span class="text-xs text-slate-500">16:45 WIB</span>
+</div>
+</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-slate-500 font-mono">#TRX-7855</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-amber-50 text-amber-600 dark:bg-amber-900/20 dark:text-amber-400">
+<span class="material-symbols-outlined text-[20px]">water_drop</span>
+</div>
+<div>
+<p class="text-sm font-medium text-slate-900 dark:text-white">Tagihan Utilitas</p>
+<p class="text-xs text-slate-500">Listrik &amp; Air (September Usage)</p>
+</div>
+</div>
+</td>
+<td class="whitespace-nowrap px-6 py-4 text-right text-sm font-bold text-slate-900 dark:text-white">Rp 420.000</td>
+<td class="whitespace-nowrap px-6 py-4 text-center">
+<span class="inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-600/20 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-500/20">
+                                                Lunas
+                                            </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary dark:text-slate-500 dark:hover:text-primary-400">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+<tr class="group transition-colors hover:bg-slate-50 dark:hover:bg-slate-700/50">
+<td class="whitespace-nowrap px-6 py-4">
+<div class="flex flex-col">
+<span class="text-sm font-medium text-slate-900 dark:text-white">24 Agu 2023</span>
+<span class="text-xs text-slate-500">11:00 WIB</span>
+</div>
+</td>
+<td class="whitespace-nowrap px-6 py-4 text-sm text-slate-500 font-mono">#TRX-6612</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="flex h-10 w-10 flex-shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-600 dark:bg-blue-900/20 dark:text-blue-400">
+<span class="material-symbols-outlined text-[20px]">home</span>
+</div>
+<div>
+<p class="text-sm font-medium text-slate-900 dark:text-white">Pembayaran Sewa</p>
+<p class="text-xs text-slate-500">Periode September 2023</p>
+</div>
+</div>
+</td>
+<td class="whitespace-nowrap px-6 py-4 text-right text-sm font-bold text-slate-900 dark:text-white">Rp 2.500.000</td>
+<td class="whitespace-nowrap px-6 py-4 text-center">
+<span class="inline-flex items-center rounded-full bg-emerald-50 px-2.5 py-0.5 text-xs font-medium text-emerald-700 ring-1 ring-inset ring-emerald-600/20 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-500/20">
+                                                Lunas
+                                            </span>
+</td>
+<td class="px-6 py-4 text-right">
+<button class="text-slate-400 hover:text-primary dark:text-slate-500 dark:hover:text-primary-400">
+<span class="material-symbols-outlined">more_vert</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="flex items-center justify-between border-t border-slate-100 bg-white px-6 py-4 dark:border-slate-700 dark:bg-slate-800">
+<div class="hidden sm:flex sm:flex-1 sm:items-center sm:justify-between">
+<div>
+<p class="text-sm text-slate-700 dark:text-slate-400">
+                                        Menampilkan <span class="font-medium text-slate-900 dark:text-white">1</span> sampai <span class="font-medium text-slate-900 dark:text-white">5</span> dari <span class="font-medium text-slate-900 dark:text-white">12</span> hasil
+                                    </p>
+</div>
+<div>
+<nav aria-label="Pagination" class="isolate inline-flex -space-x-px rounded-md shadow-sm">
+<a class="relative inline-flex items-center rounded-l-md px-2 py-2 text-slate-400 ring-1 ring-inset ring-slate-300 hover:bg-slate-50 focus:z-20 focus:outline-offset-0 dark:ring-slate-600 dark:hover:bg-slate-700" href="#">
+<span class="sr-only">Previous</span>
+<span class="material-symbols-outlined text-[20px]">chevron_left</span>
+</a>
+<a aria-current="page" class="relative z-10 inline-flex items-center bg-primary px-4 py-2 text-sm font-semibold text-white focus:z-20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary" href="#">1</a>
+<a class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-slate-900 ring-1 ring-inset ring-slate-300 hover:bg-slate-50 focus:z-20 focus:outline-offset-0 dark:text-slate-300 dark:ring-slate-600 dark:hover:bg-slate-700" href="#">2</a>
+<a class="relative inline-flex items-center px-4 py-2 text-sm font-semibold text-slate-900 ring-1 ring-inset ring-slate-300 hover:bg-slate-50 focus:z-20 focus:outline-offset-0 dark:text-slate-300 dark:ring-slate-600 dark:hover:bg-slate-700" href="#">3</a>
+<a class="relative inline-flex items-center rounded-r-md px-2 py-2 text-slate-400 ring-1 ring-inset ring-slate-300 hover:bg-slate-50 focus:z-20 focus:outline-offset-0 dark:ring-slate-600 dark:hover:bg-slate-700" href="#">
+<span class="sr-only">Next</span>
+<span class="material-symbols-outlined text-[20px]">chevron_right</span>
+</a>
+</nav>
+</div>
+</div>
+<div class="flex w-full items-center justify-between sm:hidden">
+<a class="relative inline-flex items-center rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-300" href="#">Previous</a>
+<a class="relative ml-3 inline-flex items-center rounded-md border border-slate-300 bg-white px-4 py-2 text-sm font-medium text-slate-700 hover:bg-slate-50 dark:border-slate-600 dark:bg-slate-800 dark:text-slate-300" href="#">Next</a>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+</body></html>

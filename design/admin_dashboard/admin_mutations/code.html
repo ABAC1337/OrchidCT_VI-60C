@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>OrchidCT Admin - Riwayat Mutasi</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#6a59e8",
+                        "sidebar-dark": "#1A1A2E",
+                        "background-light": "#f8f9fa",
+                        "background-dark": "#131121",
+                        "card-light": "#ffffff",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                    },
+                    borderRadius: { "DEFAULT": "0.5rem", "lg": "0.75rem", "xl": "1rem", "full": "9999px" },
+                    boxShadow: {
+                        "soft": "0 2px 10px rgba(0, 0, 0, 0.03)",
+                        "medium": "0 4px 20px rgba(0, 0, 0, 0.05)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8f9fa;
+        }
+        .sidebar-link {
+            transition: all 0.2s ease;
+        }
+        .sidebar-link:hover {
+            background-color: rgba(255, 255, 255, 0.08);
+        }
+        .sidebar-link.active {
+            background: linear-gradient(90deg, #6C5CE7 0%, #a29bfe 100%);
+            color: white;
+            box-shadow: 0 4px 12px rgba(108, 92, 231, 0.3);
+        }
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: transparent; 
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1; 
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8; 
+        }
+    </style>
+</head>
+<body class="bg-background-light text-slate-800 font-display antialiased">
+<div class="flex h-screen overflow-hidden bg-background-light">
+<aside class="hidden md:flex flex-col w-64 bg-sidebar-dark text-slate-300 h-full transition-all duration-300 relative z-20 flex-shrink-0 shadow-xl border-r border-white/5">
+<div class="flex items-center gap-3 px-6 py-8">
+<div class="flex items-center justify-center w-9 h-9 rounded-xl bg-gradient-to-br from-primary to-indigo-500 text-white shadow-lg shadow-primary/20">
+<span class="material-symbols-outlined text-[22px]">apartment</span>
+</div>
+<div>
+<h1 class="text-white text-base font-bold leading-none tracking-tight">OrchidCT</h1>
+<p class="text-slate-400 text-[10px] font-semibold uppercase tracking-wider mt-1.5">Management Panel</p>
+</div>
+</div>
+<nav class="flex-1 flex flex-col gap-1.5 px-4 overflow-y-auto mt-2">
+<a class="sidebar-link flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium mb-1 text-slate-400 hover:text-white group" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span>Dashboard</span>
+</a>
+<a class="sidebar-link flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium mb-1 text-slate-400 hover:text-white group" href="#">
+<span class="material-symbols-outlined text-[20px]">group</span>
+<span>Penghuni</span>
+</a>
+<a class="sidebar-link active flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-semibold mb-1 group" href="#">
+<span class="material-symbols-outlined text-[20px]">receipt_long</span>
+<span>Mutasi</span>
+</a>
+<a class="sidebar-link flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium mb-1 text-slate-400 hover:text-white group" href="#">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+<span>Monitoring</span>
+</a>
+</nav>
+<div class="px-4 py-6 mt-auto">
+<a class="sidebar-link flex items-center gap-3 px-4 py-3.5 rounded-xl text-sm font-medium text-slate-400 hover:text-red-400 group transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">logout</span>
+<span>Logout</span>
+</a>
+</div>
+</aside>
+<div class="flex-1 flex flex-col min-w-0 overflow-hidden">
+<header class="bg-white border-b border-slate-200/60 sticky top-0 z-10 px-6 py-4 flex items-center justify-between shadow-sm/50 backdrop-blur-sm bg-white/90">
+<div class="flex items-center gap-4">
+<button class="md:hidden p-2 text-slate-500 hover:text-primary rounded-lg hover:bg-slate-100 transition-colors">
+<span class="material-symbols-outlined">menu</span>
+</button>
+<h2 class="text-xl font-bold text-slate-800 tracking-tight">Riwayat Transaksi</h2>
+</div>
+<div class="flex items-center gap-5">
+<div class="hidden md:flex relative group">
+<span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 group-focus-within:text-primary transition-colors">
+<span class="material-symbols-outlined text-[20px]">search</span>
+</span>
+<input class="pl-10 pr-4 py-2.5 w-64 bg-slate-50 border border-slate-200 rounded-full text-sm text-slate-700 placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all shadow-sm" placeholder="Search data..." type="text"/>
+</div>
+<div class="flex items-center gap-4 border-l border-slate-200 pl-6 h-8">
+<button class="relative p-2 text-slate-500 hover:text-primary hover:bg-slate-50 rounded-full transition-colors">
+<span class="material-symbols-outlined text-[24px]">notifications</span>
+<span class="absolute top-2 right-2.5 w-2 h-2 bg-red-500 rounded-full ring-2 ring-white"></span>
+</button>
+<div class="flex items-center gap-3 cursor-pointer group">
+<div class="text-right hidden sm:block">
+<p class="text-sm font-semibold text-slate-800 group-hover:text-primary transition-colors">Admin User</p>
+<p class="text-[11px] font-medium text-slate-500 uppercase tracking-wide">Super Admin</p>
+</div>
+<div class="w-10 h-10 rounded-full bg-slate-100 p-0.5 ring-2 ring-slate-100 group-hover:ring-primary/20 transition-all">
+<img alt="Admin profile photo" class="w-full h-full object-cover rounded-full" src="https://lh3.googleusercontent.com/aida-public/AB6AXuD8WDM9gRDYyG7BEih8uekZ9Z3z0oIYo5jsdp7Jip9ViXO3TUacQlo0UfVwsl8GTPd3kNraWm4ac2sk4pMFIAQtBfW9tiJvovCeUXsNB89p2OOBigsCN9IeCnXjhf5gb06Nw72PTESmLRjM8T__EYaXG9B-Uzgog_-4oQKX9QA9Xun_Eev_BJ2Ar_0p7R3al7rnKbqbg0OFeWODC56GB-YE90sru9YoQscAUvTVtrjpbxDnX_9pvPb0ppr22zBbtR6PftWhF2uP388"/>
+</div>
+<span class="material-symbols-outlined text-slate-400 text-sm group-hover:text-primary transition-colors">expand_more</span>
+</div>
+</div>
+</div>
+</header>
+<main class="flex-1 overflow-y-auto bg-background-light p-6 md:p-8">
+<div class="max-w-7xl mx-auto space-y-6">
+<div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+<div>
+<h1 class="text-2xl font-bold text-slate-800">Daftar Mutasi</h1>
+<p class="text-slate-500 text-sm mt-1">Kelola dan pantau semua riwayat transaksi.</p>
+</div>
+<div class="flex gap-3">
+<button class="flex items-center gap-2 px-4 py-2.5 bg-white border border-slate-200 text-slate-700 rounded-xl hover:bg-slate-50 hover:border-slate-300 transition-all shadow-sm text-sm font-medium">
+<span class="material-symbols-outlined text-[20px]">print</span>
+                                Cetak PDF
+                            </button>
+<button class="flex items-center gap-2 px-4 py-2.5 bg-emerald-600 text-white rounded-xl hover:bg-emerald-700 transition-all shadow-lg shadow-emerald-200 text-sm font-medium">
+<span class="material-symbols-outlined text-[20px]">table_view</span>
+                                Export Excel
+                            </button>
+</div>
+</div>
+<div class="bg-white rounded-xl p-5 shadow-soft border border-slate-100">
+<div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+<div class="relative">
+<label class="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wide">Pencarian</label>
+<div class="relative">
+<span class="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400">
+<span class="material-symbols-outlined text-[18px]">search</span>
+</span>
+<input class="w-full pl-9 pr-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" placeholder="ID Transaksi / Penyewa" type="text"/>
+</div>
+</div>
+<div class="relative">
+<label class="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wide">Tanggal Mulai</label>
+<input class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" type="date"/>
+</div>
+<div class="relative">
+<label class="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wide">Tanggal Akhir</label>
+<input class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all" type="date"/>
+</div>
+<div class="relative">
+<label class="block text-xs font-semibold text-slate-500 mb-1.5 uppercase tracking-wide">Status</label>
+<select class="w-full px-4 py-2.5 bg-slate-50 border border-slate-200 rounded-lg text-sm text-slate-700 focus:outline-none focus:ring-2 focus:ring-primary/20 focus:border-primary transition-all appearance-none cursor-pointer">
+<option value="">Semua Status</option>
+<option value="lunas">Lunas</option>
+<option value="pending">Pending</option>
+<option value="gagal">Gagal</option>
+</select>
+<span class="absolute right-3 top-[34px] pointer-events-none text-slate-500">
+<span class="material-symbols-outlined text-[20px]">expand_more</span>
+</span>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-xl shadow-soft border border-slate-100 overflow-hidden">
+<div class="overflow-x-auto">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="bg-slate-50/80 text-xs font-semibold text-slate-500 uppercase tracking-wider border-b border-slate-100">
+<th class="px-6 py-4 w-32">ID Transaksi</th>
+<th class="px-6 py-4">Penyewa</th>
+<th class="px-6 py-4">Kamar</th>
+<th class="px-6 py-4">Deskripsi</th>
+<th class="px-6 py-4">Tanggal</th>
+<th class="px-6 py-4 text-right">Jumlah</th>
+<th class="px-6 py-4 text-center">Status</th>
+<th class="px-6 py-4 text-center">Aksi</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-slate-100">
+<tr class="hover:bg-slate-50/60 transition-colors">
+<td class="px-6 py-4 text-sm font-mono text-slate-500">#TRX-8823</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xs shrink-0">BS</div>
+<div class="flex flex-col">
+<span class="font-medium text-slate-700 text-sm">Budi Santoso</span>
+<span class="text-xs text-slate-400">081234567890</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200">
+                                                R-101
+                                            </span>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 max-w-xs truncate">Pembayaran Sewa November</td>
+<td class="px-6 py-4 text-sm text-slate-500">24 Okt 2023</td>
+<td class="px-6 py-4 text-sm font-semibold text-slate-700 text-right">Rp 1.500.000</td>
+<td class="px-6 py-4 text-center">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 border border-emerald-100">
+                                                Lunas
+                                            </span>
+</td>
+<td class="px-6 py-4 text-center">
+<button class="text-slate-400 hover:text-primary p-1.5 hover:bg-slate-100 rounded transition-colors">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50/60 transition-colors">
+<td class="px-6 py-4 text-sm font-mono text-slate-500">#TRX-8822</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center text-pink-600 font-bold text-xs shrink-0">SA</div>
+<div class="flex flex-col">
+<span class="font-medium text-slate-700 text-sm">Siti Aminah</span>
+<span class="text-xs text-slate-400">085678901234</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200">
+                                                R-204
+                                            </span>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 max-w-xs truncate">Deposit Awal Sewa</td>
+<td class="px-6 py-4 text-sm text-slate-500">23 Okt 2023</td>
+<td class="px-6 py-4 text-sm font-semibold text-slate-700 text-right">Rp 1.200.000</td>
+<td class="px-6 py-4 text-center">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-amber-100 text-amber-800 border border-amber-100">
+                                                Pending
+                                            </span>
+</td>
+<td class="px-6 py-4 text-center">
+<button class="text-slate-400 hover:text-primary p-1.5 hover:bg-slate-100 rounded transition-colors">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50/60 transition-colors">
+<td class="px-6 py-4 text-sm font-mono text-slate-500">#TRX-8821</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-purple-100 flex items-center justify-center text-purple-600 font-bold text-xs shrink-0">AH</div>
+<div class="flex flex-col">
+<span class="font-medium text-slate-700 text-sm">Ahmad Hidayat</span>
+<span class="text-xs text-slate-400">081987654321</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200">
+                                                R-102
+                                            </span>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 max-w-xs truncate">Biaya Laundry Bulan Ini</td>
+<td class="px-6 py-4 text-sm text-slate-500">22 Okt 2023</td>
+<td class="px-6 py-4 text-sm font-semibold text-slate-700 text-right">Rp 50.000</td>
+<td class="px-6 py-4 text-center">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 border border-emerald-100">
+                                                Lunas
+                                            </span>
+</td>
+<td class="px-6 py-4 text-center">
+<button class="text-slate-400 hover:text-primary p-1.5 hover:bg-slate-100 rounded transition-colors">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50/60 transition-colors">
+<td class="px-6 py-4 text-sm font-mono text-slate-500">#TRX-8820</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 font-bold text-xs shrink-0">DI</div>
+<div class="flex flex-col">
+<span class="font-medium text-slate-700 text-sm">Dina Indah</span>
+<span class="text-xs text-slate-400">081223344556</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200">
+                                                R-305
+                                            </span>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 max-w-xs truncate">Pembayaran Sewa Oktober</td>
+<td class="px-6 py-4 text-sm text-slate-500">20 Okt 2023</td>
+<td class="px-6 py-4 text-sm font-semibold text-slate-700 text-right">Rp 1.500.000</td>
+<td class="px-6 py-4 text-center">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800 border border-red-100">
+                                                Gagal
+                                            </span>
+</td>
+<td class="px-6 py-4 text-center">
+<button class="text-slate-400 hover:text-primary p-1.5 hover:bg-slate-100 rounded transition-colors">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</td>
+</tr>
+<tr class="hover:bg-slate-50/60 transition-colors">
+<td class="px-6 py-4 text-sm font-mono text-slate-500">#TRX-8819</td>
+<td class="px-6 py-4">
+<div class="flex items-center gap-3">
+<div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-xs shrink-0">RT</div>
+<div class="flex flex-col">
+<span class="font-medium text-slate-700 text-sm">Rudi Tan</span>
+<span class="text-xs text-slate-400">089988776655</span>
+</div>
+</div>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600">
+<span class="inline-flex items-center px-2 py-0.5 rounded text-xs font-medium bg-slate-100 text-slate-600 border border-slate-200">
+                                                R-105
+                                            </span>
+</td>
+<td class="px-6 py-4 text-sm text-slate-600 max-w-xs truncate">Service Charge AC</td>
+<td class="px-6 py-4 text-sm text-slate-500">19 Okt 2023</td>
+<td class="px-6 py-4 text-sm font-semibold text-slate-700 text-right">Rp 150.000</td>
+<td class="px-6 py-4 text-center">
+<span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-emerald-100 text-emerald-800 border border-emerald-100">
+                                                Lunas
+                                            </span>
+</td>
+<td class="px-6 py-4 text-center">
+<button class="text-slate-400 hover:text-primary p-1.5 hover:bg-slate-100 rounded transition-colors">
+<span class="material-symbols-outlined text-[20px]">visibility</span>
+</button>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+<div class="px-6 py-4 border-t border-slate-100 flex items-center justify-between">
+<span class="text-sm text-slate-500">Menampilkan 1-5 dari 128 data</span>
+<div class="flex items-center gap-2">
+<button class="p-2 border border-slate-200 rounded-lg text-slate-500 hover:bg-slate-50 hover:text-slate-700 disabled:opacity-50 disabled:cursor-not-allowed">
+<span class="material-symbols-outlined text-[18px]">chevron_left</span>
+</button>
+<button class="w-8 h-8 flex items-center justify-center bg-primary text-white rounded-lg text-sm font-medium shadow-sm shadow-primary/30">1</button>
+<button class="w-8 h-8 flex items-center justify-center text-slate-600 hover:bg-slate-50 rounded-lg text-sm font-medium transition-colors">2</button>
+<button class="w-8 h-8 flex items-center justify-center text-slate-600 hover:bg-slate-50 rounded-lg text-sm font-medium transition-colors">3</button>
+<span class="text-slate-400">...</span>
+<button class="w-8 h-8 flex items-center justify-center text-slate-600 hover:bg-slate-50 rounded-lg text-sm font-medium transition-colors">26</button>
+<button class="p-2 border border-slate-200 rounded-lg text-slate-500 hover:bg-slate-50 hover:text-slate-700">
+<span class="material-symbols-outlined text-[18px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+</div>
+
+</body></html>

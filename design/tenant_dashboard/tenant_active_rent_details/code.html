@@ -1,0 +1,248 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Tenant Active Rent Details - OrchidCT</title>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#6C5CE7",
+                        "primary-hover": "#5A4AD1",
+                        "sidebar-bg": "#1A1A2E",
+                        "content-bg": "#F8F9FE",
+                        "card-bg": "#FFFFFF",
+                        "text-dark": "#2D3436",
+                        "text-muted": "#636E72",
+                    },
+                    fontFamily: {
+                        "display": ["Outfit", "sans-serif"],
+                        "body": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "xl": "12px",
+                        "2xl": "16px",
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Outfit', sans-serif;
+        }
+    </style>
+</head>
+<body class="bg-content-bg text-text-dark overflow-hidden">
+<div class="flex h-screen w-full overflow-hidden">
+<aside class="flex w-64 flex-col bg-sidebar-bg h-full shrink-0 shadow-lg z-30">
+<div class="flex h-full flex-col p-6">
+<div class="flex items-center gap-3 mb-10">
+<div class="flex items-center justify-center size-10 rounded-xl bg-primary text-white shadow-lg shadow-primary/30 shrink-0">
+<span class="material-symbols-outlined text-[24px]">apartment</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-white text-lg font-bold tracking-wide font-display">OrchidCT</h1>
+<p class="text-gray-400 text-xs font-medium font-body">Tenant Portal</p>
+</div>
+</div>
+<nav class="flex flex-col flex-1 overflow-y-auto">
+<div class="mb-2">
+<p class="px-4 text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-body">Menu Utama</p>
+<div class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-all group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">dashboard</span>
+<span class="text-sm font-medium font-body">Overview</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-xl bg-gradient-to-r from-primary to-[#8e7dff] text-white shadow-lg shadow-primary/20 transition-all" href="#">
+<span class="material-symbols-outlined text-[20px] fill-1">bedroom_parent</span>
+<span class="text-sm font-medium font-body">Kamar Aktif</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-all group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">update</span>
+<span class="text-sm font-medium font-body">Perpanjang Sewa</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-all group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">receipt_long</span>
+<span class="text-sm font-medium font-body">Mutasi</span>
+</a>
+</div>
+</div>
+<div class="mt-4 mb-2">
+<p class="px-4 text-[10px] font-bold text-gray-500 uppercase tracking-wider mb-2 font-body">Akun</p>
+<div class="flex flex-col gap-1">
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-all group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">person</span>
+<span class="text-sm font-medium font-body">Profil</span>
+</a>
+<a class="flex items-center gap-3 px-4 py-2.5 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-all group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-primary transition-colors">settings</span>
+<span class="text-sm font-medium font-body">Pengaturan</span>
+</a>
+</div>
+</div>
+</nav>
+<div class="mt-auto pt-6 border-t border-white/10">
+<a class="flex items-center gap-3 px-4 py-3 rounded-xl text-gray-400 hover:text-white hover:bg-white/5 transition-all group" href="#">
+<span class="material-symbols-outlined text-[20px] group-hover:text-rose-500 transition-colors">logout</span>
+<span class="text-sm font-medium font-body">Logout</span>
+</a>
+</div>
+</div>
+</aside>
+<main class="flex-1 flex flex-col h-full overflow-hidden bg-content-bg relative">
+<header class="flex items-center justify-between px-8 h-[88px] bg-white border-b border-gray-100 shadow-sm shrink-0 z-20">
+<div>
+<h2 class="text-2xl font-bold text-text-dark tracking-tight font-display">Kamar Aktif</h2>
+<p class="text-text-muted text-sm mt-1 font-body">Detail unit dan status sewa Anda</p>
+</div>
+<div class="flex items-center gap-6">
+<span class="inline-flex items-center px-3 py-1 rounded-full bg-emerald-50 text-emerald-600 text-xs font-semibold border border-emerald-100 shadow-sm shadow-emerald-500/10">
+<span class="w-1.5 h-1.5 rounded-full bg-emerald-500 mr-2"></span>
+                    Status: Aktif
+                </span>
+<button class="flex items-center justify-center size-10 rounded-full bg-gray-50 text-gray-500 hover:bg-gray-100 hover:text-primary transition-colors relative">
+<span class="material-symbols-outlined text-[24px]">notifications</span>
+<span class="absolute top-2.5 right-2.5 size-2 bg-rose-500 rounded-full border-2 border-white"></span>
+</button>
+<div class="h-8 w-px bg-gray-200"></div>
+<div class="flex items-center gap-3">
+<div class="text-right hidden sm:block">
+<p class="text-sm font-bold text-text-dark font-display">Budi Santoso</p>
+<p class="text-xs font-medium text-text-muted font-body">Room 102</p>
+</div>
+<div class="size-10 rounded-full bg-gray-200 overflow-hidden ring-2 ring-white shadow-sm">
+<img alt="User Profile" class="w-full h-full object-cover" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAjrwEYgm4UNyFh-wDe3pn2DR2OpdUd0j038kEzwQlTaDUzaJju76fK8vsLdkVEPOQpT-FRmQHGY1NxIjQnac90aI8bN7uukglRlFbh8uybr9phrRKOrH3EXptQLlhiIVsaKo_pj_nKEZJlUuzPtn1aNDdbwmY0fJmfI-PM941SbTns4VU-bz9S3O6Q9SXBi_Sy71HYnROTaeQK2ne34Q1GLc9EFF_YOdR3Sf2IjE0bejZMxrdB1fSNjlcovyG29WHDtQOA-3H2u_w"/>
+</div>
+</div>
+</div>
+</header>
+<div class="flex-1 overflow-y-auto p-8 bg-[#F8F9FE]">
+<div class="max-w-7xl mx-auto flex flex-col gap-8 pb-8">
+<section class="@container">
+<div class="flex flex-col lg:flex-row bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
+<div class="w-full lg:w-2/5 h-64 lg:h-auto relative group overflow-hidden">
+<div class="absolute top-4 left-4 z-20">
+<span class="px-3 py-1.5 bg-emerald-500 text-white text-xs font-bold uppercase tracking-wider rounded-lg shadow-lg shadow-emerald-500/20 flex items-center gap-1 font-body">
+<span class="w-1.5 h-1.5 rounded-full bg-white animate-pulse"></span>
+                                    Aktif Disewa
+                                </span>
+</div>
+<img alt="Modern bedroom interior with dark walls" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" data-alt="Modern minimal bedroom with dark walls and cozy lighting" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAXyyOI_mWsjdzNAowTXFwcv0nk9GWYr1ZSv_fEiveMvRmsDQlqladbXAySSwaE3L0YIudqRJWF7tMHrEUbHR7y68bGh8A711q3BQ3Emr017vV4Z1BBDXNyPe0JDw7L_rSY5I7Yc3ioxDqqw4GH3Kzz4lYtd_SpqnC9l3TBwI3PwZD1LmQG_H4OGv5VffSCI5h_lgEoUV27urBsGIYXOsP76XxIuNwlQT_La947SClSzoaVHL61d-_UEAUBMp0WAqw9mNDIL6FyM3w"/>
+</div>
+<div class="flex-1 p-8 flex flex-col justify-between gap-6 relative">
+<div class="flex flex-wrap items-center justify-between gap-4">
+<div>
+<div class="flex items-center gap-3 mb-2">
+<h3 class="text-2xl font-bold text-text-dark font-display">Kamar Standard</h3>
+<div class="flex items-center gap-1.5 text-primary bg-primary/5 px-3 py-1 rounded-lg border border-primary/10">
+<span class="material-symbols-outlined text-[16px]">key</span>
+<span class="text-xs font-bold tracking-wide font-display">ROOM 102</span>
+</div>
+</div>
+<p class="text-text-muted text-sm max-w-xl leading-relaxed font-body">
+                                        Unit kamar berperabot lengkap dengan akses WiFi berkecepatan tinggi, kamar mandi dalam, dan layanan kebersihan mingguan.
+                                    </p>
+</div>
+</div>
+<hr class="border-gray-100"/>
+<div class="grid grid-cols-1 sm:grid-cols-3 gap-6">
+<div class="flex flex-col gap-1.5 p-3 rounded-xl hover:bg-gray-50 transition-colors">
+<span class="text-xs font-semibold text-gray-400 uppercase tracking-wide font-body">Tanggal Mulai</span>
+<div class="flex items-center gap-2 text-text-dark font-bold font-display">
+<div class="size-8 rounded-full bg-blue-50 text-blue-500 flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">calendar_month</span>
+</div>
+                                        1 Jan 2024
+                                    </div>
+</div>
+<div class="flex flex-col gap-1.5 p-3 rounded-xl hover:bg-gray-50 transition-colors">
+<span class="text-xs font-semibold text-gray-400 uppercase tracking-wide font-body">Berakhir Pada</span>
+<div class="flex items-center gap-2 text-text-dark font-bold font-display">
+<div class="size-8 rounded-full bg-rose-50 text-rose-500 flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">event_busy</span>
+</div>
+                                        31 Jan 2024
+                                    </div>
+</div>
+<div class="flex flex-col gap-1.5 p-3 rounded-xl hover:bg-gray-50 transition-colors">
+<span class="text-xs font-semibold text-gray-400 uppercase tracking-wide font-body">Biaya Sewa</span>
+<div class="flex items-center gap-2 text-text-dark font-bold font-display">
+<div class="size-8 rounded-full bg-emerald-50 text-emerald-500 flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">payments</span>
+</div>
+                                        Rp 1.500.000<span class="text-xs font-normal text-text-muted font-body">/bln</span>
+</div>
+</div>
+</div>
+<div class="flex flex-col sm:flex-row items-center justify-between gap-6 pt-2">
+<div class="flex items-center gap-4 bg-gray-50 p-3 pr-6 rounded-xl w-full sm:w-auto border border-gray-100">
+<div class="flex items-center justify-center size-10 rounded-lg bg-white text-primary shadow-sm border border-gray-100 shrink-0">
+<span class="material-symbols-outlined text-[20px]">timer</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xl font-bold text-text-dark leading-none mb-0.5 font-display">12</span>
+<span class="text-[10px] font-bold text-text-muted uppercase tracking-wider font-body">Hari Tersisa</span>
+</div>
+</div>
+<button class="w-full sm:w-auto px-6 h-12 rounded-xl bg-primary hover:bg-primary-hover text-white font-semibold shadow-lg shadow-primary/25 flex items-center justify-center gap-2 transition-all transform hover:-translate-y-0.5 font-body">
+<span class="material-symbols-outlined text-[20px]">update</span>
+                                    Perpanjang Sewa
+                                </button>
+</div>
+</div>
+</div>
+</section>
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+<div class="lg:col-span-2 bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
+<div class="flex items-center justify-between mb-6">
+<h3 class="text-lg font-bold text-text-dark font-display">Fasilitas Termasuk</h3>
+<button class="text-xs text-primary font-semibold hover:text-primary-hover hover:underline transition-colors font-body">Lihat Semua</button>
+</div>
+<div class="grid grid-cols-2 sm:grid-cols-4 gap-4">
+<div class="flex flex-col items-center justify-center p-4 rounded-xl bg-gray-50 border border-transparent hover:border-primary/20 hover:bg-white hover:shadow-sm transition-all group">
+<span class="material-symbols-outlined text-3xl mb-2 text-gray-400 group-hover:text-primary transition-colors">wifi</span>
+<span class="text-sm font-medium text-text-dark font-body">Free WiFi</span>
+</div>
+<div class="flex flex-col items-center justify-center p-4 rounded-xl bg-gray-50 border border-transparent hover:border-primary/20 hover:bg-white hover:shadow-sm transition-all group">
+<span class="material-symbols-outlined text-3xl mb-2 text-gray-400 group-hover:text-primary transition-colors">ac_unit</span>
+<span class="text-sm font-medium text-text-dark font-body">AC</span>
+</div>
+<div class="flex flex-col items-center justify-center p-4 rounded-xl bg-gray-50 border border-transparent hover:border-primary/20 hover:bg-white hover:shadow-sm transition-all group">
+<span class="material-symbols-outlined text-3xl mb-2 text-gray-400 group-hover:text-primary transition-colors">local_laundry_service</span>
+<span class="text-sm font-medium text-text-dark font-body">Laundry</span>
+</div>
+<div class="flex flex-col items-center justify-center p-4 rounded-xl bg-gray-50 border border-transparent hover:border-primary/20 hover:bg-white hover:shadow-sm transition-all group">
+<span class="material-symbols-outlined text-3xl mb-2 text-gray-400 group-hover:text-primary transition-colors">chair</span>
+<span class="text-sm font-medium text-text-dark font-body">Furnished</span>
+</div>
+</div>
+</div>
+<div class="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 flex flex-col">
+<h3 class="text-lg font-bold text-text-dark mb-4 font-display">Tagihan Berikutnya</h3>
+<div class="flex-1 flex flex-col justify-center items-center text-center p-6 rounded-xl bg-gradient-to-br from-gray-50 to-white border border-dashed border-gray-300 mb-4 relative overflow-hidden">
+<div class="absolute -top-6 -right-6 size-24 bg-primary/5 rounded-full blur-2xl"></div>
+<div class="absolute -bottom-6 -left-6 size-20 bg-emerald-500/5 rounded-full blur-2xl"></div>
+<span class="text-xs font-bold text-gray-400 uppercase tracking-widest mb-1 relative z-10 font-body">Jatuh Tempo</span>
+<span class="text-xl font-bold text-text-dark mb-4 relative z-10 font-display">1 Feb 2024</span>
+<div class="w-16 h-0.5 bg-gray-200 rounded-full mb-4 relative z-10"></div>
+<span class="text-3xl font-bold text-primary relative z-10 font-display">Rp 1.5jt</span>
+</div>
+<button class="w-full py-3 rounded-xl border border-gray-200 text-text-dark text-sm font-semibold hover:bg-gray-50 transition-colors font-body">
+                            Lihat Detail Tagihan
+                        </button>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+</body></html>

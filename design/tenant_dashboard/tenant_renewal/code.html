@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Perpanjang Sewa - OrchidCT</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;900&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#6C5CE7",
+                        "primary-dark": "#5646c2",
+                        "sidebar-dark": "#1A1A2E",
+                        "sidebar-active": "#6C5CE7", 
+                        "background-light": "#F8F9FE",
+                        "background-dark": "#131121",
+                        "surface-dark": "#1c1a2e",
+                    },
+                    fontFamily: {
+                        "display": ["Inter", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem", 
+                        "lg": "0.5rem", 
+                        "xl": "0.75rem", 
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        .sidebar-gradient {
+            background: linear-gradient(180deg, #6C5CE7 0%, #5646c2 100%);
+        }
+    </style>
+</head>
+<body class="bg-background-light dark:bg-background-dark font-display text-gray-900 dark:text-gray-100 antialiased overflow-hidden">
+<div class="flex h-screen w-full overflow-hidden">
+<aside class="hidden w-64 flex-col bg-sidebar-dark lg:flex h-full text-white">
+<div class="flex h-20 shrink-0 items-center px-6 border-b border-white/10">
+<div class="flex items-center gap-3">
+<div class="flex h-10 w-10 items-center justify-center rounded-lg bg-primary text-white">
+<span class="material-symbols-outlined">apartment</span>
+</div>
+<div class="flex flex-col">
+<h1 class="text-lg font-bold text-white leading-tight">OrchidCT</h1>
+<p class="text-xs text-gray-400 font-medium">Tenant Portal</p>
+</div>
+</div>
+</div>
+<nav class="flex flex-1 flex-col overflow-y-auto px-4 py-6 gap-6">
+<div>
+<h3 class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Menu Utama</h3>
+<div class="space-y-1">
+<a class="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-400 hover:bg-white/5 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">dashboard</span>
+<span class="text-sm font-medium">Overview</span>
+</a>
+<a class="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-400 hover:bg-white/5 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">bedroom_parent</span>
+<span class="text-sm font-medium">Kamar Aktif</span>
+</a>
+<a class="flex items-center gap-3 rounded-lg sidebar-gradient px-3 py-2 text-white font-medium shadow-lg shadow-primary/20" href="#">
+<span class="material-symbols-outlined text-[20px] fill-1">update</span>
+<span class="text-sm">Perpanjang Sewa</span>
+</a>
+<a class="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-400 hover:bg-white/5 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">receipt_long</span>
+<span class="text-sm font-medium">Mutasi</span>
+</a>
+</div>
+</div>
+<div>
+<h3 class="px-3 text-xs font-semibold text-gray-500 uppercase tracking-wider mb-2">Akun</h3>
+<div class="space-y-1">
+<a class="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-400 hover:bg-white/5 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">person</span>
+<span class="text-sm font-medium">Profil</span>
+</a>
+<a class="flex items-center gap-3 rounded-lg px-3 py-2 text-gray-400 hover:bg-white/5 hover:text-white transition-colors" href="#">
+<span class="material-symbols-outlined text-[20px]">settings</span>
+<span class="text-sm font-medium">Pengaturan</span>
+</a>
+</div>
+</div>
+</nav>
+<div class="p-4 border-t border-white/10">
+<button class="flex w-full items-center gap-3 rounded-lg px-3 py-2 text-gray-400 hover:text-white hover:bg-white/5 transition-colors group">
+<span class="material-symbols-outlined text-[20px] group-hover:text-white transition-colors">logout</span>
+<span class="text-sm font-medium">Logout</span>
+</button>
+</div>
+</aside>
+<main class="flex flex-1 flex-col h-full overflow-hidden bg-background-light relative">
+<header class="flex h-20 items-center justify-between px-8 bg-white border-b border-gray-200 shrink-0">
+<div class="flex flex-col">
+<h1 class="text-xl font-bold text-gray-900 leading-tight">Perpanjang Sewa</h1>
+<p class="text-sm text-gray-500">Pilih durasi sewa untuk melanjutkan masa tinggal Anda</p>
+</div>
+<div class="flex items-center gap-6 ml-auto">
+<div class="flex items-center gap-2 px-3 py-1.5 bg-green-50 rounded-full border border-green-100">
+<div class="w-2 h-2 rounded-full bg-green-500"></div>
+<span class="text-sm font-medium text-green-700">Status: Aktif</span>
+</div>
+<button class="relative p-2 text-gray-400 hover:text-gray-600 transition-colors">
+<span class="material-symbols-outlined">notifications</span>
+<span class="absolute top-2 right-2 w-2 h-2 bg-red-500 rounded-full border-2 border-white"></span>
+</button>
+<div class="h-8 w-px bg-gray-200"></div>
+<div class="flex items-center gap-3 pl-2">
+<div class="text-right hidden sm:block">
+<p class="text-sm font-semibold text-gray-900">Budi Santoso</p>
+<p class="text-xs text-gray-500">Room 102</p>
+</div>
+<div class="h-10 w-10 rounded-full bg-orange-100 flex items-center justify-center ring-2 ring-white shadow-sm text-orange-600">
+<span class="material-symbols-outlined">person</span>
+</div>
+</div>
+</div>
+</header>
+<div class="flex-1 overflow-y-auto p-4 md:p-8 lg:px-12 xl:px-16 bg-[#F8F9FE]">
+<div class="mx-auto max-w-6xl space-y-8 pb-24">
+<div class="rounded-xl bg-white p-6 shadow-sm border border-gray-100 flex flex-col md:flex-row gap-6 items-start md:items-center">
+<div class="h-24 w-full md:w-32 shrink-0 rounded-lg bg-gray-200 bg-cover bg-center" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuBn6IuviUUIhBQe29_EQ3pSll8pfZ-pG4fSPZGaLw7JOiTLVUD7XEcw-Lk78LW-q5XwuK205y4znoJBiGfH2VGdbbBZ9EZB5Z1BxWtzBbBR4YA_LkcSSPKd7YXX49qbcukXoltTdd4zSTzZWHRJAZguN9QFU6RG3z9iHGlBH618g8XSM6nJv7S1Lc5y-d2JNztXUNmkEy1QkWNAZaDL3G0yjI-dACXr7u6_nKzjwrtA0XTScfG96lxTJmW3mB2UK23JZIXHRfB4eK4");'></div>
+<div class="flex-1 space-y-1">
+<div class="flex flex-wrap items-center gap-3">
+<h2 class="text-xl font-bold text-gray-900">Room 302 - Orchid Tower A</h2>
+<span class="rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-semibold text-green-700">Aktif</span>
+</div>
+<p class="text-gray-500 text-sm">Standard Studio Suite • 45m²</p>
+<div class="flex items-center gap-2 text-sm pt-1">
+<span class="material-symbols-outlined text-orange-500 text-lg">schedule</span>
+<span class="text-gray-700 font-medium">Sewa berakhir dalam <span class="text-orange-600 font-bold">5 hari</span> (25 Okt 2023)</span>
+</div>
+</div>
+<div class="hidden md:block h-12 w-px bg-gray-100 mx-4"></div>
+<div class="flex flex-col gap-1 md:text-right w-full md:w-auto">
+<span class="text-xs font-medium uppercase tracking-wider text-gray-400">Harga Bulanan</span>
+<span class="text-lg font-bold text-gray-900">Rp 2.500.000</span>
+</div>
+</div>
+<div class="flex flex-col lg:flex-row gap-8">
+<div class="flex-1 space-y-6">
+<h3 class="text-xl font-bold text-gray-900">Pilih Durasi</h3>
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+<label class="cursor-pointer relative group">
+<input class="peer sr-only" name="duration" type="radio" value="1"/>
+<div class="h-full rounded-xl border border-gray-200 bg-white p-5 transition-all hover:border-primary/50 peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:shadow-sm shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<span class="text-xs font-bold text-gray-500 uppercase tracking-wider bg-gray-100 px-2 py-1 rounded">Jangka Pendek</span>
+<div class="w-5 h-5 rounded-full border-2 border-gray-300 peer-checked:group-[]:border-primary peer-checked:group-[]:bg-primary transition-colors flex items-center justify-center">
+<div class="w-2 h-2 bg-white rounded-full opacity-0 peer-checked:group-[]:opacity-100 transition-opacity"></div>
+</div>
+</div>
+<div class="space-y-1">
+<h4 class="text-lg font-bold text-gray-900">1 Bulan</h4>
+<div class="flex items-baseline gap-1">
+<span class="text-2xl font-black text-gray-900">Rp 2.5 jt</span>
+<span class="text-sm text-gray-500">/ bulan</span>
+</div>
+<p class="text-xs text-gray-400 pt-2">Harga standar. Perpanjangan fleksibel.</p>
+</div>
+</div>
+</label>
+<label class="cursor-pointer relative group">
+<input class="peer sr-only" name="duration" type="radio" value="3"/>
+<div class="h-full rounded-xl border border-gray-200 bg-white p-5 transition-all hover:border-primary/50 peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:shadow-sm shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<span class="text-xs font-bold text-primary bg-primary/10 px-2 py-1 rounded-md">Hemat 4%</span>
+<div class="w-5 h-5 rounded-full border-2 border-gray-300 peer-checked:group-[]:border-primary peer-checked:group-[]:bg-primary transition-colors flex items-center justify-center">
+<div class="w-2 h-2 bg-white rounded-full opacity-0 peer-checked:group-[]:opacity-100 transition-opacity"></div>
+</div>
+</div>
+<div class="space-y-1">
+<h4 class="text-lg font-bold text-gray-900">3 Bulan</h4>
+<div class="flex items-baseline gap-1">
+<span class="text-2xl font-black text-gray-900">Rp 7.2 jt</span>
+<span class="text-sm text-gray-500">/ 3 bulan</span>
+</div>
+<p class="text-xs text-gray-400 pt-2">Rp 2.400.000 / bulan ekuivalen.</p>
+</div>
+</div>
+</label>
+<label class="cursor-pointer relative group">
+<input checked="" class="peer sr-only" name="duration" type="radio" value="6"/>
+<div class="h-full rounded-xl border border-gray-200 bg-white p-5 transition-all hover:border-primary/50 peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:shadow-sm shadow-sm ring-1 ring-primary/0 peer-checked:ring-primary/20">
+<div class="flex justify-between items-start mb-4">
+<span class="text-xs font-bold text-white bg-primary px-2 py-1 rounded-md shadow-sm">Populer</span>
+<div class="w-5 h-5 rounded-full border-2 border-gray-300 peer-checked:group-[]:border-primary peer-checked:group-[]:bg-primary transition-colors flex items-center justify-center">
+<div class="w-2 h-2 bg-white rounded-full opacity-0 peer-checked:group-[]:opacity-100 transition-opacity"></div>
+</div>
+</div>
+<div class="space-y-1">
+<h4 class="text-lg font-bold text-gray-900">6 Bulan</h4>
+<div class="flex items-baseline gap-1">
+<span class="text-2xl font-black text-gray-900">Rp 14 jt</span>
+<span class="text-sm text-gray-500">/ 6 bulan</span>
+</div>
+<p class="text-xs text-gray-400 pt-2">~Rp 2.333.333 / bulan. <span class="text-green-600 font-medium">Hemat 7%</span></p>
+</div>
+</div>
+</label>
+<label class="cursor-pointer relative group">
+<input class="peer sr-only" name="duration" type="radio" value="12"/>
+<div class="h-full rounded-xl border border-gray-200 bg-white p-5 transition-all hover:border-primary/50 peer-checked:border-primary peer-checked:bg-primary/5 peer-checked:shadow-sm shadow-sm">
+<div class="flex justify-between items-start mb-4">
+<span class="text-xs font-bold text-purple-700 bg-purple-100 px-2 py-1 rounded-md border border-purple-200">Terbaik</span>
+<div class="w-5 h-5 rounded-full border-2 border-gray-300 peer-checked:group-[]:border-primary peer-checked:group-[]:bg-primary transition-colors flex items-center justify-center">
+<div class="w-2 h-2 bg-white rounded-full opacity-0 peer-checked:group-[]:opacity-100 transition-opacity"></div>
+</div>
+</div>
+<div class="space-y-1">
+<h4 class="text-lg font-bold text-gray-900">12 Bulan</h4>
+<div class="flex items-baseline gap-1">
+<span class="text-2xl font-black text-gray-900">Rp 27 jt</span>
+<span class="text-sm text-gray-500">/ tahun</span>
+</div>
+<p class="text-xs text-gray-400 pt-2">~Rp 2.250.000 / bulan. <span class="text-green-600 font-medium">Hemat 10%</span></p>
+</div>
+</div>
+</label>
+</div>
+<div class="rounded-xl bg-blue-50 p-4 border border-blue-100 flex gap-3 shadow-sm">
+<span class="material-symbols-outlined text-blue-600 shrink-0">info</span>
+<p class="text-sm text-blue-800">
+                                Dengan memilih durasi yang lebih lama, Anda mengunci harga saat ini dan menghindari kenaikan harga di kuartal berikutnya.
+                            </p>
+</div>
+</div>
+<div class="w-full lg:w-96 shrink-0">
+<div class="sticky top-6 rounded-2xl bg-white shadow-xl shadow-gray-200/50 border border-gray-100 overflow-hidden">
+<div class="bg-gray-50 p-4 border-b border-gray-100">
+<h3 class="text-lg font-bold text-gray-900">Ringkasan Pembayaran</h3>
+<p class="text-xs text-gray-500">Ringkasan Pembayaran</p>
+</div>
+<div class="p-6 space-y-4">
+<div class="flex justify-between text-sm">
+<span class="text-gray-600">Paket Sewa (6 Bulan)</span>
+<span class="font-semibold text-gray-900">Rp 14.000.000</span>
+</div>
+<div class="flex justify-between text-sm">
+<span class="text-gray-600">Biaya Layanan</span>
+<span class="font-semibold text-gray-900">Sudah Termasuk</span>
+</div>
+<div class="flex justify-between text-sm">
+<span class="text-gray-600">Biaya Admin</span>
+<span class="font-semibold text-gray-900">Rp 15.000</span>
+</div>
+<div class="flex justify-between text-sm text-green-600">
+<span>Diskon (7%)</span>
+<span>- Rp 1.000.000</span>
+</div>
+<hr class="border-dashed border-gray-200 my-2"/>
+<div class="flex justify-between items-end">
+<div class="flex flex-col">
+<span class="text-sm text-gray-500">Total Pembayaran</span>
+<span class="text-xs text-gray-400">Sudah termasuk pajak</span>
+</div>
+<span class="text-2xl font-black text-primary">Rp 13.015.000</span>
+</div>
+<div class="flex items-center gap-2 rounded-lg bg-gray-50 p-3 mt-4">
+<span class="material-symbols-outlined text-gray-400">credit_card</span>
+<div class="flex-1">
+<p class="text-xs font-semibold text-gray-700">Metode Pembayaran Utama</p>
+<p class="text-[10px] text-gray-500">Visa ending in 4242</p>
+</div>
+<button class="text-xs text-primary font-bold hover:underline">Ubah</button>
+</div>
+</div>
+<div class="p-4 bg-gray-50 border-t border-gray-100">
+<button class="w-full flex items-center justify-center gap-2 rounded-xl bg-primary hover:bg-primary-dark text-white font-bold py-3.5 px-4 shadow-lg shadow-primary/30 transition-all transform hover:scale-[1.02] active:scale-[0.98]">
+<span>Bayar Sekarang</span>
+<span class="material-symbols-outlined text-sm">arrow_forward</span>
+</button>
+<p class="text-center text-[10px] text-gray-400 mt-3">
+                                    Dengan mengklik "Bayar Sekarang", Anda menyetujui <a class="underline hover:text-primary" href="#">Syarat &amp; Ketentuan</a>.
+                                </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+</main>
+</div>
+
+</body></html>

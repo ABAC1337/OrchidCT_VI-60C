@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="id"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Lupa Password - OrchidCT</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;family=Outfit:wght@500;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#6C5CE7",
+                        "primary-dark": "#5a4bd1",
+                        "background-light": "#F8F9FE",
+                        "background-dark": "#131121",
+                        "text-main": "#2D3436",
+                        "text-secondary": "#636e72",
+                    },
+                    fontFamily: {
+                        "display": ["Outfit", "sans-serif"],
+                        "body": ["Inter", "sans-serif"],
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem", 
+                        "lg": "0.5rem", 
+                        "xl": "0.75rem", 
+                        "2xl": "1rem", 
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Outfit', sans-serif;
+        }
+        .form-input {
+            @apply w-full px-4 py-3 rounded-xl border border-gray-200 focus:border-primary focus:ring-2 focus:ring-primary/20 outline-none transition-all duration-200 bg-gray-50 text-text-main placeholder-gray-400 font-body;
+        }
+        .form-label {
+            @apply block text-sm font-medium text-text-main mb-2 font-body;
+        }
+    </style>
+</head>
+<body class="bg-background-light text-text-main h-screen flex items-center justify-center p-4">
+<div class="w-full max-w-[480px] bg-white rounded-[12px] shadow-sm border border-gray-100 p-8 sm:p-10">
+<div class="flex flex-col items-center mb-8">
+<div class="flex items-center gap-2.5 mb-6">
+<div class="flex items-center justify-center size-10 bg-primary/10 rounded-lg">
+<span class="material-symbols-outlined text-primary text-2xl">apartment</span>
+</div>
+<span class="text-2xl font-bold tracking-tight font-display text-text-main">OrchidCT</span>
+</div>
+<h1 class="text-2xl font-bold text-text-main text-center mb-2">Lupa Password?</h1>
+<p class="text-text-secondary text-sm text-center max-w-[320px] leading-relaxed">
+                Masukkan email Anda untuk menerima instruksi pengaturan ulang password.
+            </p>
+</div>
+<form action="#" class="space-y-6">
+<div>
+<label class="form-label" for="email">Email</label>
+<input class="form-input" id="email" placeholder="nama@email.com" required="" type="email"/>
+</div>
+<button class="w-full py-3.5 px-4 bg-primary hover:bg-primary-dark text-white font-bold rounded-xl shadow-lg shadow-primary/25 hover:shadow-primary/35 transition-all transform hover:-translate-y-0.5 active:translate-y-0 text-[15px]" type="submit">
+                Kirim Instruksi
+            </button>
+</form>
+<div class="mt-8 text-center">
+<a class="inline-flex items-center gap-2 text-sm font-bold text-primary hover:text-primary-dark transition-colors group" href="#">
+<span class="material-symbols-outlined text-[18px] group-hover:-translate-x-1 transition-transform">arrow_back</span>
+                Kembali ke Login
+            </a>
+</div>
+</div>
+
+</body></html>
