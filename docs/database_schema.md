@@ -15,7 +15,141 @@ This document proposes the complete database schema required by the OrchidCT Kos
 
 ---
 
-## 2. Entity Relationship Diagram
+## 2. Collection Overview
+
+The schema consists of **11 tables** grouped into 4 logical domains:
+
+| Domain | Tables | Purpose |
+|---|---|---|
+| **Identity & Access** | `users` | User accounts for admins and tenants, authentication, profile data |
+| **Property** | `floors`, `room_types`, `rooms`, `facilities`, `room_facilities` | Physical building structure — floors, room units, categories, and amenities |
+| **Rental Lifecycle** | `rental_packages`, `rentals` | Rent contracts from booking through expiry, with duration-based pricing packages |
+| **Financial** | `invoices`, `payments` | Billing (rent, electricity, water) and payment records with admin verification workflow |
+| **Communication** | `announcements` | Property-wide notices and maintenance alerts from admin to tenants |
+
+### Table Relationships at a Glance
+
+- A **User** (tenant) → has many **Rentals** → each rental has many **Invoices** → each invoice has many **Payments**
+- A **Room** → belongs to a **Floor** and a **Room Type** → has many **Facilities** (via junction table)
+- A **Rental** → links one **User** to one **Room** for a time period, optionally using a **Rental Package**
+- **Announcements** → created by admin **Users**, displayed on tenant dashboard
+
+---
+
+## 3. Data Flow
+
+The following diagrams illustrate how data flows through the system for each core business process.
+
+### 3.1 Registration & Authentication Flow
+
+```mermaid
+sequenceDiagram
+    participant T as Tenant
+    participant FE as Frontend
+    participant API as Backend API
+    participant DB as Database
+
+    T->>FE: Fill register form (name, email, phone, password)
+    FE->>API: POST /auth/register
+    API->>DB: INSERT into users (role='tenant', status='active')
+    DB-->>API: User created
+    API-->>FE: JWT token + user data
+    FE-->>T: Redirect to /dashboard
+
+    Note over T,DB: Alternative: Google OAuth
+    T->>FE: Click "Daftar dengan Google"
+    FE->>API: POST /auth/google
+    API->>DB: UPSERT users (google_id)
+    DB-->>API: User
+    API-->>FE: JWT token
+```
+
+### 3.2 Room Rental Flow
+
+```mermaid
+sequenceDiagram
+    participant T as Tenant
+    participant FE as Frontend
+    participant API as Backend API
+    participant DB as Database
+
+    T->>FE: Browse /rooms, select available room
+    FE->>API: GET /rooms?status=available
+    API->>DB: SELECT rooms JOIN floors, room_types, room_facilities
+    DB-->>API: Room list
+    API-->>FE: Rooms with facilities
+
+    T->>FE: Click "Sewa" → choose package (1/3/6/12 months)
+    T->>FE: Select payment method → "Bayar Sekarang"
+    FE->>API: POST /rentals
+    API->>DB: INSERT into rentals (start_date, end_date, total_price)
+    API->>DB: UPDATE rooms SET status='occupied'
+    API->>DB: INSERT into invoices (type='rent')
+    API->>DB: INSERT into payments (status='pending')
+    DB-->>API: Created
+    API-->>FE: Rental confirmation
+```
+
+### 3.3 Monthly Billing Cycle
+
+```mermaid
+sequenceDiagram
+    participant SYS as System/Cron
+    participant DB as Database
+    participant T as Tenant
+    participant FE as Frontend
+
+    SYS->>DB: Find active rentals approaching due date
+    SYS->>DB: INSERT into invoices (type='rent', status='pending')
+    SYS->>DB: INSERT into invoices (type='electricity/water', status='pending')
+
+    T->>FE: Open /dashboard/mutations
+    FE->>DB: SELECT invoices JOIN payments WHERE rental.user_id = current_user
+    DB-->>FE: Mutation history with statuses (Lunas/Pending)
+    FE-->>T: Display transaction table
+
+    Note over SYS,DB: Overdue Detection
+    SYS->>DB: UPDATE invoices SET status='overdue' WHERE due_date < NOW() AND status='pending'
+```
+
+### 3.4 Payment & Verification Flow
+
+```mermaid
+sequenceDiagram
+    participant T as Tenant
+    participant FE as Frontend
+    participant API as Backend API
+    participant DB as Database
+    participant A as Admin
+
+    T->>FE: Click "Perpanjang Sewa" or pay invoice
+    T->>FE: Select payment method, upload proof
+    FE->>API: POST /payments
+    API->>DB: INSERT into payments (status='pending', proof_url)
+    DB-->>API: Payment created
+    API-->>FE: Payment submitted
+
+    A->>FE: Open /admin/mutations
+    FE->>API: GET /payments?status=pending
+    API->>DB: SELECT payments JOIN invoices, users, rooms
+    DB-->>FE: Pending payments list
+
+    A->>FE: Click Approve ✓
+    FE->>API: PATCH /payments/:id {status: 'verified'}
+    API->>DB: UPDATE payments SET status='verified', verified_by, verified_at
+    API->>DB: UPDATE invoices SET status='paid'
+    DB-->>API: Updated
+    API-->>FE: Verification confirmed
+
+    Note over A,DB: If Rejected
+    A->>FE: Click Reject ✕
+    FE->>API: PATCH /payments/:id {status: 'rejected'}
+    API->>DB: UPDATE payments SET status='rejected'
+```
+
+---
+
+## 4. Entity Relationship Diagram
 
 ```mermaid
 erDiagram
@@ -141,9 +275,9 @@ erDiagram
 
 ---
 
-## 3. Detailed Table Definitions
+## 5. Detailed Table Definitions
 
-### 3.1 `users`
+### 5.1 `users`
 
 Stores all app users (admins and tenants). Derived from: Register form, Login, AuthContext, Profile page, Admin Users page.
 
@@ -167,7 +301,7 @@ Stores all app users (admins and tenants). Derived from: Register form, Login, A
 
 ---
 
-### 3.2 `floors`
+### 5.2 `floors`
 
 Lookup table for building floors. Derived from: Room Availability boards, Monitoring page.
 
@@ -179,7 +313,7 @@ Lookup table for building floors. Derived from: Room Availability boards, Monito
 
 ---
 
-### 3.3 `room_types`
+### 5.3 `room_types`
 
 Defines categories of rooms with base pricing. Derived from: Room Availability header ("Tipe Kamar Standard", Rp 1.200.000/bulan).
 
@@ -192,7 +326,7 @@ Defines categories of rooms with base pricing. Derived from: Room Availability h
 
 ---
 
-### 3.4 `rooms`
+### 5.4 `rooms`
 
 Individual room units in the kos building. Derived from: Room Availability grid, Admin Monitoring, Active Rent page.
 
@@ -212,7 +346,7 @@ Individual room units in the kos building. Derived from: Room Availability grid,
 
 ---
 
-### 3.5 `facilities`
+### 5.5 `facilities`
 
 Master list of room facilities/amenities. Derived from: Room Availability (WiFi, AC, Kamar Mandi, Springbed) and Active Rent page (6 facilities listed).
 
@@ -232,7 +366,7 @@ Master list of room facilities/amenities. Derived from: Room Availability (WiFi,
 
 ---
 
-### 3.6 `room_facilities` (junction table)
+### 5.6 `room_facilities` (junction table)
 
 Many-to-many relationship between rooms and facilities.
 
@@ -244,7 +378,7 @@ Many-to-many relationship between rooms and facilities.
 
 ---
 
-### 3.7 `rental_packages`
+### 5.7 `rental_packages`
 
 Pricing packages for rent duration. Derived from: Tenant Renewal page.
 
@@ -266,7 +400,7 @@ Pricing packages for rent duration. Derived from: Tenant Renewal page.
 
 ---
 
-### 3.8 `rentals`
+### 5.8 `rentals`
 
 Active and historical rent contracts. Derived from: Tenant Overview, Active Rent, Admin Users, Admin Monitoring.
 
@@ -287,7 +421,7 @@ Active and historical rent contracts. Derived from: Tenant Overview, Active Rent
 
 ---
 
-### 3.9 `invoices`
+### 5.9 `invoices`
 
 Bills generated for tenants — rent, electricity, water. Derived from: Tenant Mutations table, Activity feed, Admin Mutations.
 
@@ -304,7 +438,7 @@ Bills generated for tenants — rent, electricity, water. Derived from: Tenant M
 
 ---
 
-### 3.10 `payments`
+### 5.10 `payments`
 
 Payment records and verification flow. Derived from: Tenant Mutations (amount, method, status), Renewal (payment methods), Admin Mutations (verify/reject actions), Admin Dashboard (recent activity with amounts and statuses).
 
@@ -328,7 +462,7 @@ Payment records and verification flow. Derived from: Tenant Mutations (amount, m
 
 ---
 
-### 3.11 `announcements`
+### 5.11 `announcements`
 
 Property-wide notices. Derived from: Tenant Overview info card ("Info Pemeliharaan" — planned maintenance notices).
 
@@ -345,7 +479,7 @@ Property-wide notices. Derived from: Tenant Overview info card ("Info Pemelihara
 
 ---
 
-## 4. Indexes & Performance Considerations
+## 6. Indexes & Performance Considerations
 
 | Table | Index | Columns | Rationale |
 |---|---|---|---|
@@ -363,7 +497,7 @@ Property-wide notices. Derived from: Tenant Overview info card ("Info Pemelihara
 
 ---
 
-## 5. Summary Statistics (How the schema supports each page)
+## 7. Summary Statistics (How the schema supports each page)
 
 | Page | Primary Tables Used |
 |---|---|
@@ -382,7 +516,7 @@ Property-wide notices. Derived from: Tenant Overview info card ("Info Pemelihara
 
 ---
 
-## 6. ENUM Value Reference
+## 8. ENUM Value Reference
 
 | ENUM | Values | Source |
 |---|---|---|
