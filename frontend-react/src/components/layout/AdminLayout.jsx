@@ -75,10 +75,6 @@ export default function AdminLayout() {
 
                     </div>
                     <div className="flex items-center gap-4">
-                        <div className="hidden sm:flex items-center gap-2 bg-gray-50 rounded-full px-4 py-2 border border-gray-100">
-                            <span className="material-symbols-outlined text-text-muted text-xl">search</span>
-                            <input type="text" placeholder="Search tenants..." className="bg-transparent outline-none text-sm w-40 text-text-main placeholder-text-muted" />
-                        </div>
                         <button className="relative p-2 hover:bg-gray-100 rounded-lg">
                             <span className="material-symbols-outlined text-text-muted">notifications</span>
                             <span className="absolute top-1.5 right-1.5 size-2 bg-red-500 rounded-full"></span>

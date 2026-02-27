@@ -80,7 +80,7 @@ export default function TenantOverview() {
                             </div>
                             <div>
                                 <h4 className="font-bold text-text-main">Riwayat &amp; Mutasi</h4>
-                                <p className="text-sm text-text-muted">Cek detail tagihan listrik, air, dan pembayaran sewa bulanan Anda.</p>
+                                <p className="text-sm text-text-muted">Cek detail tagihan air dan pembayaran sewa bulanan Anda.</p>
                             </div>
                         </div>
                         <Link to="/dashboard/mutations" className="shrink-0 bg-gray-100 hover:bg-gray-200 text-text-main text-sm font-bold py-2.5 px-5 rounded-xl flex items-center gap-2 transition-all">
@@ -99,7 +99,6 @@ export default function TenantOverview() {
                     <div className="flex flex-col gap-3">
                         {[
                             { icon: 'check_circle', color: 'text-green-500 bg-green-50', label: 'Sewa Oktober', date: '25 Sep 2023', badge: 'LUNAS', badgeColor: 'bg-green-100 text-green-700' },
-                            { icon: 'warning', color: 'text-orange-500 bg-orange-50', label: 'Tagihan Listrik', date: '01 Okt 2023', badge: 'PENDING', badgeColor: 'bg-yellow-100 text-yellow-700' },
                             { icon: 'check_circle', color: 'text-green-500 bg-green-50', label: 'Sewa September', date: '25 Agu 2023', badge: 'LUNAS', badgeColor: 'bg-green-100 text-green-700' },
                         ].map((item, i) => (
                             <div key={i} className="bg-white rounded-xl border border-gray-100 p-4 flex items-center justify-between shadow-sm">

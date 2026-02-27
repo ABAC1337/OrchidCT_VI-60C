@@ -19,14 +19,14 @@ lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor inc
 
 - Node.js
 - React.js
-- Express.js
-- MongoDB
+- Vite
+- JavaScript
 
 ## Installation
 
 ```bash
     git clone https://github.com/ABAC1337/OrchidCT_VI-60C.git
     cd OrchidCT_VI-60C
-    pnpm install
-    pnpm start 
+    npm install 
+    npm run dev
 ```

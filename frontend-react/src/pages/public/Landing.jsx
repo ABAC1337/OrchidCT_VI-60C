@@ -14,13 +14,13 @@ const avatars = [
 ]
 
 const facilities = [
-    { icon: 'wifi', name: 'High-Speed WiFi' },
+    { icon: 'wifi', name: 'WI-FI' },
     { icon: 'bathtub', name: 'Kamar Mandi Dalam' },
-    { icon: 'local_parking', name: 'Area Parkir Luas' },
+    { icon: 'local_parking', name: 'Area Parkir' },
     { icon: 'security', name: 'Keamanan CCTV 24/7' },
-    { icon: 'local_laundry_service', name: 'Layanan Laundry' },
     { icon: 'bolt', name: 'Listrik Token' },
-    { icon: 'tv', name: 'Smart TV' },
+    { icon: 'mode_fan', name: 'Kipas Angin' },
+    { icon: 'ac_unit', name: 'Air Conditioner' },
     { icon: 'location_city', name: 'Dekat Fasilitas Umum' },
 ]
 

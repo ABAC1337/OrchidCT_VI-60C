@@ -46,7 +46,7 @@ export default function Profile() {
                         </div>
                     </div>
                     <div>
-                        <label className="form-label">Alamat KTP</label>
+                        <label className="form-label">Domisili</label>
                         <input className="form-input" defaultValue="Jl. Merdeka No. 10, Jakarta" disabled={!editing} />
                     </div>
                 </div>
